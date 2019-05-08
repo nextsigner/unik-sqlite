@@ -14,10 +14,10 @@ Rectangle {
         id:xS
         width: colCentral.width
         height: r.height
-       contentWidth: colCentral.width
-       contentHeight: colCentral.height
-       anchors.horizontalCenter: r.horizontalCenter
-       Column{
+        contentWidth: colCentral.width
+        contentHeight: colCentral.height
+        anchors.horizontalCenter: r.horizontalCenter
+        Column{
             id:colCentral
             spacing: app.fs*2
             Text {
@@ -49,7 +49,7 @@ Rectangle {
                 Item{
                     width: app.fs*6
                     height: app.fs
-                   anchors.verticalCenter: parent.verticalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     Text {
                         text: "%"+parseInt(sv.value)
                         font.pixelSize: app.fs*0.5
@@ -242,82 +242,74 @@ Rectangle {
 
 
             }
-
             Row{
-                height: app.fs*0.5
                 spacing: app.fs*0.5
+                height: app.fs
                 Text {
-                    text: "Resetear Qmlandia: "
+                    text: "Hacer que Unik inicie simpre con: "
                     font.pixelSize: app.fs*0.5
                     color: app.c2
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                Boton{
+                BotonUX{
                     anchors.verticalCenter: parent.verticalCenter
-                    w:tb1.contentWidth+app.fs
-                    h:app.fs
-                    tp:3
-                    d:'Regenerar el archivo cfg.json'
-                    c:app.c2
-                    b:app.c2
-                    t:''
-                    onClicking: {
+                    text:'Unik Launcher'
+                    fs: app.fs*0.5
+                    property bool su: false
+                    onClicked: {
                         var j=appsDir+'/cfg.json'
-                        var c='{"arg0":"-folder='+appsDir+'/qmlandia", "arg1":"-dir='+appsDir+'/qmlandia", "arg2":"-cfg"}'
+                        unik.deleteFile(j)
+                    }
+                }
+                BotonUX{
+                    anchors.verticalCenter: parent.verticalCenter
+                    text:app.moduleName
+                    fs: app.fs*0.5
+                    property bool su: false
+                    onClicked: {
+                        var j=appsDir+'/cfg.json'
+                        var c='{"arg0":"-folder='+appsDir+'/'+app.moduleName+'", "arg1":"-dir='+appsDir+'/'+app.moduleName+'"}'
                         unik.setFile(j, c)
-                        var ncode='"import QtQuick 2.0\\nItem{\\nComponent.onCompleted:unik.restartApp("-cfg")\\n}"'
+                        var ncode='"import QtQuick 2.0\\nItem{\\nComponent.onCompleted:unik.restartApp(\\"\\")\\n}"'
                         var code='import QtQuick 2.0\n'
                         code+='Item{\n'
                         code+='     id:xdc111\n'
                         code+='     anchors.fill:parent\n'
                         code+='     Xdc{\n'
-                        code+='     consulta: "Se ha reconfigurado Qmlandia\\nPara cargar la \\nnueva configuraciòn\\nes necesario reiniciar la aplicaciòn.\\n\\n¿Desea reiniciar ahora?"\n'
+                        code+='     consulta: "A partir de ahora Unik iniciarà como  '+app.moduleName+'\\nPara deshacer esto tiene que eliminar el archivo cfg.json de la carpeta principal de Unik."\n'
                         code+='     code: '+ncode+'\n'
                         code+='}\n'
                         code+='}\n'
                         var obj = Qt.createQmlObject(code, r, 'xm2222')
-                    }
-                    Text {
-                        id:tb1
-                        text: "Resetear Archivo de Configuraciòn"
-                        font.pixelSize: app.fs*0.5
-                        color: app.c3
-                        anchors.verticalCenter: parent
+
                     }
                 }
-
             }
-
             Row{
                 height: app.fs*0.5
                 spacing: app.fs*0.5
                 Text {
-                    text: "Actualizar Qmlandia: "
+                    text: "Actualizar : "+app.moduleName
                     font.pixelSize: app.fs*0.5
                     color: app.c2
                     anchors.verticalCenter: parent.verticalCenter
                 }
-                Boton{
+                BotonUX{
                     anchors.verticalCenter: parent.verticalCenter
-                    w:tb2.contentWidth+app.fs
-                    h:app.fs
-                    tp:3
-                    d:'Descargar desde Github.com'
-                    c:app.c2
-                    b:app.c2
-                    t:''
-                    onClicking: {
+                    text:'Actualizar'
+                    fs: app.fs*0.5
+                    property bool su: false
+                    onClicked: {
                         var j=appsDir+'/cfg.json'
-                        var c='{"arg0":"-git=https://github.com/nextsigner/qmlandia.git", "arg1":"-dir='+appsDir+'/qmlandia", "arg2":"-cfg"}'
+                        var c='{"arg0":"-git=https://github.com/nextsigner/'+app.moduleName+'.git", "arg1":"-dir='+appsDir+'/'+app.moduleName+'"}'
                         unik.setFile(j, c)
-                        unik.restartApp("-cfg")
+                        unik.restartApp("")
                     }
                     Text {
                         id:tb2
                         text: "Descargar"
                         font.pixelSize: app.fs*0.5
                         color: app.c3
-                        anchors.verticalCenter: parent
                     }
                 }
 

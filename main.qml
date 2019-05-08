@@ -24,6 +24,9 @@ ApplicationWindow {
     property color c3: "black"
     property color c4: "white"
 
+    property int umod: 0
+    property int us: 0
+
     property int mod: 0
     property int cantmod//: mods.children.length
     property string gitfolder
@@ -318,10 +321,21 @@ ApplicationWindow {
         if(appSettings.cantRun===1){
             appSettings.volume=0.8
         }
-        //appSettings.umod=0
-        //appSettings.ucs=0
-        app.mod=appSettings.umod
-        app.s=appSettings.ucs
+
+        var omitirIntro=false
+
+        if(app.qt){
+            app.mod=0
+            app.s=2
+        }else{
+            if(omitirIntro){
+                app.mod=app.umod
+                app.s=app.us
+            }else{
+                app.mod=0
+                app.s=0
+            }
+        }
 
         if(appSettings.tema<=0){
             appSettings.tema=1
