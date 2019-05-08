@@ -1,0 +1,11 @@
+*.qmlc
+*.autosave
+!*/*/commit
+!*/*/fms
+*/*/*
+!h/
+!*.qml
+!.gitignore
+!ms.json
+!screenshot.png
+!README.md
