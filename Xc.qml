@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.0
+import Qt.labs.folderlistmodel 2.1
 Rectangle {
     id: r
     width: parent.width
@@ -10,6 +11,19 @@ Rectangle {
     clip:true
     visible: false
     z:9999
+    property bool aplicar: false
+    property string prevAppfontFamily
+    onVisibleChanged: {
+        if(visible){
+            prevAppfontFamily=appSettings.fontFamily
+        }
+        if(!visible&&aplicar){
+            appSettings.fontFamily=cbFF.currentText
+        }else{
+            appSettings.fontFamily=prevAppfontFamily
+        }
+
+    }
     Flickable{
         id:xS
         width: colCentral.width
@@ -314,7 +328,74 @@ Rectangle {
                 }
 
             }
+            Row{
+                spacing: app.fs
+                UText{
+                    id: labelEstiloLetra
+                    text: "Estilo de Letra: "
+                    font.pixelSize: app.fs*0.5
+                    font.family: appSettings.fontFamily
+                    color: app.c1
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                ComboBoxFromFolder{
+                    id:cbFF
+                    width: app.fs*10
+                    height: app.fs
+                    nameFilters: '*.ttf'
+                    showDirs: false
+                    onCurrentTextChanged: {
+                        labelEstiloLetra.update()
+                    }
+                    onPreSelected:  {
+                        appSettings.fontFamily=text.substring(0, text.length-4)
+                    }
+                    onAccepted: droping=false
+                    Rectangle{
+                        id:xPrevText
+                        width: app.fs*12
+                        height: r.height
+                        color: app.c3
+                        border.width: 2
+                        border.color: app.c1
+                        anchors.left: parent.right
+                        anchors.leftMargin: app.fs
+                        anchors.top: parent.top
+                        anchors.topMargin: 0-parent.parent.y
+                        visible:parent.droping
+                        Column{
+                            anchors.centerIn: parent
+                            spacing: app.fs
+                            Repeater{
+                                model: ['Texto de Ejemplo', 'Texto de Ejemplo', 'Texto de Ejemplo', 'Texto de Ejemplo']
+                                UText{
+                                    text: modelData
+                                    font.pixelSize: app.fs*0.5*index
+                                    width: xPrevText.width-app.fs
+                                    wrapMode: Text.WordWrap
+                                    color: app.c2
+                                }
+                            }
+                        }
 
+                        BotonUX{
+                            text: 'X'
+                            fs: app.fs*0.5
+                            anchors.right: parent.right
+                            anchors.rightMargin: app.fs*0.1
+                            anchors.top: parent.top
+                            anchors.topMargin: app.fs*0.1
+                            onClicked: parent.parent.droping=false
+                        }
+                    }
+                }
+                BotonUX{
+                    text: !r.aplicar?'Aplicar':'Deshacer'
+                    onClicked: !r.aplicar
+                    fs: app.fs*0.5
+                    z:cbFF.z-1
+                }
+            }
         }
         Boton{
             w:app.fs
@@ -331,6 +412,7 @@ Rectangle {
             onClicking: {
                 r.visible=false
             }
+            visible:!xPrevText.visible
         }
     }
 

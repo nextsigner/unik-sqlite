@@ -68,9 +68,18 @@ ApplicationWindow {
         property int lvh
 
         property int tema
-        //onTemaChanged: setTema()
+        property string fontFamily
+        onFontFamilyChanged: {
+            setFontFamily()
+        }
+        Component.onCompleted: {
+            setFontFamily()
+        }
     }
+    property string ff:ffl.name
     FontLoader {name: "FontAwesome";source: "qrc:/fontawesome-webfont.ttf";}
+    FontLoader{id: ffl;name: "frozencrystal"; source: "./"+name+".ttf"}
+    FontLoader {id: appFontFamily; name: appSettings.fontFamily.substring(0, appSettings.fontFamily.length-3);source: "./"+appSettings.fontFamily+"";}
     Rectangle{
         id:xApp
         color: app.c3
@@ -95,7 +104,8 @@ ApplicationWindow {
             Text {
                 id: xEstado
                 text: app.moduleName
-                font.pixelSize: app.fs
+                font.pixelSize: app.fs*0.5
+                //font.family: "Abduction2002"
                 anchors.centerIn: parent
                 color:app.c2
                 width: parent.width*0.6
@@ -121,16 +131,8 @@ ApplicationWindow {
         Xp{id:xP}
         Xt{id:xT;visible:appSettings.tamlector!==-1&&at!==''}
         ControlesPrincipales{id:controles;anchors.bottom: xApp.bottom;}
-        Xc{id:xC}
         Xu{id:xU}
-        LogView{
-            width: parent.width
-            height: appSettings.lvh
-            fontSize: app.fs
-            topHandlerHeight: Qt.platform.os!=='android'?app.fs*0.25:app.fs*0.75
-            anchors.bottom: parent.bottom
-            visible: appSettings.logViewVisible
-        }
+
         Xb{
             id:xB
             anchors.horizontalCenter: parent.horizontalCenter
@@ -175,6 +177,16 @@ ApplicationWindow {
                     xM.opacity=xM.opacity===0.0?1.0:0.0
                 }
             }
+        }
+        Xc{id:xC}
+        LogView{
+            id: logView
+            width: parent.width
+            height: appSettings.lvh
+            fontSize: app.fs
+            topHandlerHeight: Qt.platform.os!=='android'?app.fs*0.25:app.fs*0.75
+            anchors.bottom: parent.bottom
+            visible: appSettings.logViewVisible
         }
         focus: true
         property bool shift: false
@@ -548,6 +560,7 @@ ApplicationWindow {
         console.log('Code: '+code)
         var obj = Qt.createQmlObject(code, xS, 'xm2'+nid)
         xC.z=xS.z+1
+        logView.z=xC.z+1
         xEstado.text=''
         tShowS.stop()       
     }
@@ -592,5 +605,11 @@ ApplicationWindow {
             c3="black"
             c4="white"
         }
+    }
+    function setFontFamily(){
+        var c='import QtQuick 2.0\nFontLoader{name:"'+appSettings.fontFamily.substring(0, appSettings.fontFamily.length-3)+'"; source:"./'+appSettings.fontFamily+'"}'
+        var comp=Qt.createQmlObject(c,app, 'setFontFamily')
+        console.log('FontFamily Seted: '+appSettings.fontFamily)
+        ffl.name=appSettings.fontFamily.substring(0, appSettings.fontFamily.length-4)
     }
 }
