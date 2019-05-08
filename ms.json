@@ -1,0 +1,11 @@
+{
+    "modulos":{
+        "m100":{
+            "par":["Curso de Sqlite Super Fàcil"],
+            "s0":["intro", "https://github.com/nextsigner/unik-qdm-sqlite-mod-intro.git"],
+            "s1":["indice", "https://github.com/nextsigner/unik-qdm-sqlite-mod-index.git"],
+            "s2":["Iniciar Base de Datos Sqlite", "https://github.com/nextsigner/unik-qdm-sqlite-mod-001.git"]
+             }
+    },
+    "info":["Curso Interactivo creado por @nextsigner"]
+}
