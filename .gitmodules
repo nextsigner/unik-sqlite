@@ -1,9 +1,9 @@
-[submodule "m100/s2/unik-qdm-sqlite-mod-001"]
-	path = m100/s2/unik-qdm-sqlite-mod-001
-	url = git@github.com:nextsigner/unik-qdm-sqlite-mod-001.git
 [submodule "m100/s0/unik-sqlite-mod-intro"]
 	path = m100/s0/unik-sqlite-mod-intro
 	url = git@github.com:nextsigner/unik-sqlite-mod-intro.git
-[submodule "m100/ss/unik-sqlite-mod-index"]
-	path = m100/ss/unik-sqlite-mod-index
+[submodule "m100/s1/unik-sqlite-mod-index"]
+	path = m100/s1/unik-sqlite-mod-index
 	url = git@github.com:nextsigner/unik-sqlite-mod-index.git
+[submodule "m100/s2/unik-sqlite-mod-001"]
+	path = m100/s2/unik-sqlite-mod-001
+	url = git@github.com:nextsigner/unik-sqlite-mod-001.git
