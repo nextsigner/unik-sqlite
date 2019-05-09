@@ -73,13 +73,13 @@ ApplicationWindow {
             setFontFamily()
         }
         Component.onCompleted: {
-            setFontFamily()
+            //setFontFamily()
         }
     }
     property string ff:ffl.name
     FontLoader {name: "FontAwesome";source: "qrc:/fontawesome-webfont.ttf";}
-    FontLoader{id: ffl;name: "frozencrystal"; source: "./"+name+".ttf"}
-    FontLoader {id: appFontFamily; name: appSettings.fontFamily.substring(0, appSettings.fontFamily.length-3);source: "./"+appSettings.fontFamily+"";}
+    FontLoader{id: ffl;name: appSettings.fontFamily.replace('.ttf', '').replace('.otf', ''); source: "./"+appSettings.fontFamily+""}
+    //FontLoader {id: appFontFamily; name: appSettings.fontFamily.substring(0, appSettings.fontFamily.length-4);source: "./"+appSettings.fontFamily+"";}
     Rectangle{
         id:xApp
         color: app.c3
@@ -357,6 +357,7 @@ ApplicationWindow {
         }
         tinit.start()
         console.log('appSettings.cbs='+appSettings.cbs)
+        console.log('Current Font Family:'+appSettings.fontFamily)
     }
     function prepMod(){
         xT.at=''
@@ -607,9 +608,7 @@ ApplicationWindow {
         }
     }
     function setFontFamily(){
-        var c='import QtQuick 2.0\nFontLoader{name:"'+appSettings.fontFamily.substring(0, appSettings.fontFamily.length-3)+'"; source:"./'+appSettings.fontFamily+'"}'
-        var comp=Qt.createQmlObject(c,app, 'setFontFamily')
-        console.log('FontFamily Seted: '+appSettings.fontFamily)
-        ffl.name=appSettings.fontFamily.substring(0, appSettings.fontFamily.length-4)
+        ffl.name=appSettings.fontFamily.replace('.ttf', '').replace('.otf', '')
+        ffl.source="./"+appSettings.fontFamily
     }
 }

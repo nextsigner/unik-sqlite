@@ -44,6 +44,7 @@ ComboBox{
                 radius: 5
             }
             itemDelegate.label: Rectangle{
+
                 width: r.width
                 height: r.menuItemHeight
                 color: 'transparent'
@@ -57,14 +58,22 @@ ComboBox{
                     color: styleData.selected ? app.c3 : app.c1
                     text: styleData.text
                     onColorChanged: {
-                        if(color===app.c1){
+                        if(color===app.c3){
+                           r.droping=true
                             r.preSelected(text)
-                            r.droping=true
                         }
                     }
                 }
             }
             itemDelegate.background: Rectangle {  // selection of an item
+                onVisibleChanged: {
+                    if(!visible){
+                        r.droping=false
+                    }else{
+                        r.droping=true
+                    }
+                    tpreselected.stop()
+                }
                 radius: 2
                 color: styleData.selected ? app.c1 : "transparent"
                 border.width: 2
@@ -82,4 +91,5 @@ ComboBox{
             horizontalAlignment: r.textAlignHCenter?Text.AlignHCenter:Text.AlignLeft
         }
     }
+
 }

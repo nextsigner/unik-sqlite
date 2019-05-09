@@ -85,6 +85,7 @@ Item {
         color: r.fontColor
         anchors.centerIn: parent
         visible: r.enabled
+        font.family: app.ff
     }
     Text {
         id: a2
@@ -96,6 +97,7 @@ Item {
         visible: r.enabled
         Behavior on x{NumberAnimation{duration:200}}
         opacity: b3.opacity
+        font.family: app.ff
     }
     Text {
         id: txtCancel
@@ -104,6 +106,7 @@ Item {
         color: 'red'
         anchors.centerIn: parent
         visible: !r.enabled
+        font.family: app.ff
     }
     MouseArea{
         id: maBX

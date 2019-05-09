@@ -11,18 +11,24 @@ Rectangle {
     clip:true
     visible: false
     z:9999
+    property bool abierto: false
     property bool aplicar: false
     property string prevAppfontFamily
+    property string selectedfontFamily
     onVisibleChanged: {
         if(visible){
+            abierto=true
             prevAppfontFamily=appSettings.fontFamily
+            cbFF.currentText=appSettings.fontFamily
         }
         if(!visible&&aplicar){
-            appSettings.fontFamily=cbFF.currentText
+            appSettings.fontFamily=r.selectedfontFamily
         }else{
-            appSettings.fontFamily=prevAppfontFamily
+            appSettings.fontFamily=r.prevAppfontFamily
         }
-
+        if(!visible){
+            aplicar=false
+        }
     }
     Flickable{
         id:xS
@@ -71,9 +77,7 @@ Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
             }
-
             Row{
                 spacing: app.fs
                 height: app.fs*0.5
@@ -92,21 +96,21 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbt1
                         checked: appSettings.tema===1
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tema=1
                                 app.setTema()
+                                rbt2.checked=false
+                                rbt3.checked=false
+                                rbt4.checked=false
                             }
                         }
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
-
-
                 Row{
                     spacing: app.fs*0.1
                     height: app.fs*0.5
@@ -116,13 +120,16 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbt2
                         checked: appSettings.tema===2
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tema=2
                                 app.setTema()
+                                rbt1.checked=false
+                                rbt3.checked=false
+                                rbt4.checked=false
                             }
                         }
                         anchors.verticalCenter: parent.verticalCenter
@@ -137,13 +144,16 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbt3
                         checked: appSettings.tema===3
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tema=3
                                 app.setTema()
+                                rbt1.checked=false
+                                rbt2.checked=false
+                                rbt4.checked=false
                             }
                         }
                         anchors.verticalCenter: parent.verticalCenter
@@ -158,21 +168,22 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbt4
                         checked: appSettings.tema===4
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tema=4
                                 app.setTema()
+                                rbt1.checked=false
+                                rbt2.checked=false
+                                rbt3.checked=false
                             }
                         }
                         anchors.verticalCenter: parent.verticalCenter
                     }
                 }
-
             }
-
             Row{
                 spacing: app.fs
                 Text {
@@ -188,12 +199,15 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbxt1
                         checked: appSettings.tamlector===-1
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tamlector=-1
+                                rbxt2.checked=false
+                                rbxt3.checked=false
+                                rbxt4.checked=false
                             }
                         }
                     }
@@ -207,12 +221,15 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbxt2
                         checked: appSettings.tamlector===0
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tamlector=0
+                                rbxt1.checked=false
+                                rbxt3.checked=false
+                                rbxt4.checked=false
                             }
                         }
                     }
@@ -225,12 +242,15 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbxt3
                         checked: appSettings.tamlector===1
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tamlector=1
+                                rbxt1.checked=false
+                                rbxt2.checked=false
+                                rbxt4.checked=false
                             }
                         }
                     }
@@ -243,12 +263,15 @@ Rectangle {
                         font.pixelSize: app.fs*0.5
                         anchors.verticalCenter: parent.verticalCenter
                     }
-                    RadioButton{
-                        font.pixelSize: app.fs*0.5
+                    URadioButton{
+                        id: rbxt4
                         checked: appSettings.tamlector===2
                         onCheckedChanged: {
                             if(checked){
                                 appSettings.tamlector=2
+                                rbxt1.checked=false
+                                rbxt2.checked=false
+                                rbxt3.checked=false
                             }
                         }
                     }
@@ -319,14 +342,7 @@ Rectangle {
                         unik.setFile(j, c)
                         unik.restartApp("")
                     }
-                    Text {
-                        id:tb2
-                        text: "Descargar"
-                        font.pixelSize: app.fs*0.5
-                        color: app.c3
-                    }
                 }
-
             }
             Row{
                 spacing: app.fs
@@ -345,10 +361,35 @@ Rectangle {
                     nameFilters: '*.ttf'
                     showDirs: false
                     onCurrentTextChanged: {
+                        if(!r.abierto){
+                            return
+                        }
+                        r.selectedfontFamily=currentText
                         labelEstiloLetra.update()
                     }
+                    property int v: 0
                     onPreSelected:  {
-                        appSettings.fontFamily=text.substring(0, text.length-4)
+                        if(!r.abierto){
+                            return
+                        }
+                        tpreselected.text=text
+                        tpreselected.restart()
+                        v++
+                    }
+                    Timer{
+                        id: tpreselected
+                        running: false
+                        repeat: true
+                        interval: 250
+                        property string text
+                        onTriggered: {
+                            if(!r.abierto){
+                                return
+                            }
+                            appSettings.fontFamily=text
+                            xPrevText.update()
+                            app.setFontFamily()
+                        }
                     }
                     onAccepted: droping=false
                     Rectangle{
@@ -366,18 +407,35 @@ Rectangle {
                         Column{
                             anchors.centerIn: parent
                             spacing: app.fs
-                            Repeater{
-                                model: ['Texto de Ejemplo', 'Texto de Ejemplo', 'Texto de Ejemplo', 'Texto de Ejemplo']
-                                UText{
-                                    text: modelData
-                                    font.pixelSize: app.fs*0.5*index
-                                    width: xPrevText.width-app.fs
-                                    wrapMode: Text.WordWrap
-                                    color: app.c2
-                                }
+                            UText{
+                                text: 'Texto de Ejemplo '+app.ff
+                                font.pixelSize: app.fs*0.5
+                                width: xPrevText.width-app.fs
+                                wrapMode: Text.WordWrap
+                                color: app.c2
+                            }
+                            UText{
+                                text: 'Texto de Ejemplo '+app.ff
+                                font.pixelSize: app.fs*0.75
+                                width: xPrevText.width-app.fs
+                                wrapMode: Text.WordWrap
+                                color: app.c2
+                            }
+                            UText{
+                                text: 'Texto de Ejemplo '+app.ff
+                                font.pixelSize: app.fs
+                                width: xPrevText.width-app.fs
+                                wrapMode: Text.WordWrap
+                                color: app.c2
+                            }
+                            UText{
+                                text: 'Texto de Ejemplo '+app.ff
+                                font.pixelSize: app.fs*1.25
+                                width: xPrevText.width-app.fs
+                                wrapMode: Text.WordWrap
+                                color: app.c2
                             }
                         }
-
                         BotonUX{
                             text: 'X'
                             fs: app.fs*0.5
@@ -391,32 +449,28 @@ Rectangle {
                 }
                 BotonUX{
                     text: !r.aplicar?'Aplicar':'Deshacer'
-                    onClicked: !r.aplicar
+                    onClicked: r.aplicar=!r.aplicar
                     fs: app.fs*0.5
                     z:cbFF.z-1
                 }
             }
         }
-        Boton{
-            w:app.fs
-            h:w
-            tp:1
-            d:'Cerrar'
-            c:app.c3
-            b:app.c2
-            t:'X'
-            anchors.right: parent.right
-            anchors.rightMargin: app.fs*0.5
-            anchors.top: parent.top
-            anchors.topMargin: app.fs*0.5
-            onClicking: {
-                r.visible=false
-            }
-            visible:!xPrevText.visible
-        }
     }
-
-    Component.onCompleted: {
-
+    Boton{
+        w:app.fs
+        h:w
+        tp:1
+        d:'Cerrar'
+        c:app.c3
+        b:app.c2
+        t:'X'
+        anchors.right: parent.right
+        anchors.rightMargin: app.fs*0.5
+        anchors.top: parent.top
+        anchors.topMargin: app.fs*0.5
+        onClicking: {
+            r.visible=false
+        }
+        visible:!xPrevText.visible
     }
 }
